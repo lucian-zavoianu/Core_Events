@@ -1,14 +1,19 @@
 import React, { Component } from "react";
 import { Header, Icon, List } from "semantic-ui-react";
 import axios from "axios";
+import { IEvent } from "../models/event";
 
-class App extends Component {
-  state = {
-    events: []
+interface IState {
+  events: IEvent[]
+}
+
+class App extends Component<{}, IState> {
+  readonly state: IState = {
+    events: [],
   };
 
   componentDidMount() {
-    axios.get("http://localhost:5000/api/events").then((response: any) => {
+    axios.get<IEvent[]>('http://localhost:5000/api/events').then((response: any) => {
       // console.log(response);
       this.setState({
         events: response.data
@@ -25,7 +30,7 @@ class App extends Component {
         </Header>
 
         <List>
-          {this.state.events.map((event: any) => (
+          {this.state.events.map((event) => (
             <List.Item key = { event.id } >{ event.title }</List.Item>
           ))}
         </List>
