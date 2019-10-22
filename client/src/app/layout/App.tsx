@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Header, Icon, List } from "semantic-ui-react";
 import axios from 'axios';
 import { IEvent } from "../models/event";
+import Navbar from "../../features/nav/Navbar";
 
 const App = () => {
   const [events, setEvents] = useState<IEvent[]>([]);
@@ -16,10 +17,7 @@ const App = () => {
 
   return (
     <div>
-      <Header as="h2">
-        <Icon name="users" />
-        <Header.Content>Core Events</Header.Content>
-      </Header>
+      <Navbar />
 
       <List>
         {events.map(event => (
