@@ -4,14 +4,14 @@ import axios from "axios";
 
 class App extends Component {
   state = {
-    values: []
+    events: []
   };
 
   componentDidMount() {
-    axios.get("http://localhost:5000/api/values").then((response: any) => {
+    axios.get("http://localhost:5000/api/events").then((response: any) => {
       // console.log(response);
       this.setState({
-        values: response.data
+        events: response.data
       });
     });
   }
@@ -25,8 +25,8 @@ class App extends Component {
         </Header>
 
         <List>
-          {this.state.values.map((value: any) => (
-            <List.Item key = { value.id } >{ value.name }</List.Item>
+          {this.state.events.map((event: any) => (
+            <List.Item key = { event.id } >{ event.title }</List.Item>
           ))}
         </List>
       </div>
