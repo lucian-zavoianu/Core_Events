@@ -3,6 +3,7 @@ import { Grid } from "semantic-ui-react";
 import { IEvent } from "../../../app/models/event";
 import EventList from "./EventList";
 import EventDetails from "../details/EventDetails";
+import EventForm from "../form/EventForm";
 
 interface IProps {
     events: IEvent[]
@@ -17,6 +18,7 @@ const EventsDashboard: React.FC<IProps> = ({events}) => {
 
       <Grid.Column width = { 6 }>
         <EventDetails />
+        <EventForm />
       </Grid.Column>
     </Grid>
   );
