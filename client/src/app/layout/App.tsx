@@ -7,6 +7,11 @@ import EventsDashboard from "../../features/events/dashboard/EventsDashboard";
 
 const App = () => {
   const [events, setEvents] = useState<IEvent[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<IEvent | null>(null);
+
+  const handleSelectEvent = (id: string) => {
+    setSelectedEvent(events.filter(e => e.id === id)[0]);
+  };
 
   useEffect(() => {
     axios
@@ -20,8 +25,12 @@ const App = () => {
     <Fragment>
       <Navbar />
 
-      <Container style={{ marginTop: '100px' }}>
-        <EventsDashboard events = { events } />
+      <Container style={{ marginTop: "100px" }}>
+        <EventsDashboard
+          events={events}
+          selectEvent={handleSelectEvent}
+          selectedEvent={selectedEvent}
+        />
       </Container>
     </Fragment>
   );

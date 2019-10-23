@@ -4,24 +4,32 @@ import { IEvent } from "../../../app/models/event";
 
 interface IProps {
   events: IEvent[];
+  selectEvent: (id: string) => void;
 }
 
-const EventList: React.FC<IProps> = ({ events }) => {
+const EventList: React.FC<IProps> = ({ events, selectEvent }) => {
   return (
     <Segment clearing>
       <Item.Group divided>
         {events.map(event => (
-          <Item key = { event.id }>
+          <Item key={event.id}>
             <Item.Content>
-              <Item.Header as="a">{ event.title }</Item.Header>
-              <Item.Meta>{ event.date }</Item.Meta>
+              <Item.Header as="a">{event.title}</Item.Header>
+              <Item.Meta>{event.date}</Item.Meta>
               <Item.Description>
-                <div>{ event.description }</div>
-                <div>{ event.city }, { event.venue }</div>
+                <div>{event.description}</div>
+                <div>
+                  {event.city}, {event.venue}
+                </div>
               </Item.Description>
               <Item.Extra>
-                <Button floated="right" content="View" color="blue"></Button>
-                <Label basic content = { event.category } />
+                <Button
+                  onClick={() => selectEvent(event.id)}
+                  floated="right"
+                  content="View"
+                  color="blue"
+                ></Button>
+                <Label basic content={event.category} />
               </Item.Extra>
             </Item.Content>
           </Item>

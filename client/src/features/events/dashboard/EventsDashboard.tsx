@@ -6,18 +6,24 @@ import EventDetails from "../details/EventDetails";
 import EventForm from "../form/EventForm";
 
 interface IProps {
-    events: IEvent[]
+  events: IEvent[];
+  selectEvent: (id: string) => void;
+  selectedEvent: IEvent | null;
 }
 
-const EventsDashboard: React.FC<IProps> = ({events}) => {
+const EventsDashboard: React.FC<IProps> = ({
+  events,
+  selectEvent,
+  selectedEvent
+}) => {
   return (
     <Grid>
-      <Grid.Column width = { 10 }>
-        <EventList events = { events } />
+      <Grid.Column width={10}>
+        <EventList events={events} selectEvent={selectEvent} />
       </Grid.Column>
 
-      <Grid.Column width = { 6 }>
-        <EventDetails />
+      <Grid.Column width={6}>
+        {selectedEvent && <EventDetails event={selectedEvent} />}
         <EventForm />
       </Grid.Column>
     </Grid>
