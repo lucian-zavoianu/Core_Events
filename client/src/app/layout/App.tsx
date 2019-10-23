@@ -8,6 +8,7 @@ import EventsDashboard from "../../features/events/dashboard/EventsDashboard";
 const App = () => {
   const [events, setEvents] = useState<IEvent[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<IEvent | null>(null);
+  const [editMode, setEditMode] = useState(false);
 
   const handleSelectEvent = (id: string) => {
     setSelectedEvent(events.filter(e => e.id === id)[0]);
@@ -30,6 +31,8 @@ const App = () => {
           events={events}
           selectEvent={handleSelectEvent}
           selectedEvent={selectedEvent}
+          editMode = {editMode}
+          setEditMode = {setEditMode}
         />
       </Container>
     </Fragment>

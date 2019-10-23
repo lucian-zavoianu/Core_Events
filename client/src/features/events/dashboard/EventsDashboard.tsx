@@ -9,12 +9,16 @@ interface IProps {
   events: IEvent[];
   selectEvent: (id: string) => void;
   selectedEvent: IEvent | null;
+  editMode: boolean;
+  setEditMode: (editMode: boolean) => void;
 }
 
 const EventsDashboard: React.FC<IProps> = ({
   events,
   selectEvent,
-  selectedEvent
+  selectedEvent,
+  editMode,
+  setEditMode
 }) => {
   return (
     <Grid>
@@ -23,8 +27,10 @@ const EventsDashboard: React.FC<IProps> = ({
       </Grid.Column>
 
       <Grid.Column width={6}>
-        {selectedEvent && <EventDetails event={selectedEvent} />}
-        <EventForm />
+        {selectedEvent && !editMode && (
+          <EventDetails event={selectedEvent} setEditMode={setEditMode} />
+        )}
+        {editMode && <EventForm />}
       </Grid.Column>
     </Grid>
   );
