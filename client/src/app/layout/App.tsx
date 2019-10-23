@@ -14,6 +14,11 @@ const App = () => {
     setSelectedEvent(events.filter(e => e.id === id)[0]);
   };
 
+  const handleOpenCreateForm = () => {
+    setSelectedEvent(null);
+    setEditMode(true);
+  };
+
   useEffect(() => {
     axios
       .get<IEvent[]>("http://localhost:5000/api/events")
@@ -24,15 +29,16 @@ const App = () => {
 
   return (
     <Fragment>
-      <Navbar />
+      <Navbar openCreateForm={handleOpenCreateForm} />
 
       <Container style={{ marginTop: "100px" }}>
         <EventsDashboard
           events={events}
           selectEvent={handleSelectEvent}
           selectedEvent={selectedEvent}
-          editMode = {editMode}
-          setEditMode = {setEditMode}
+          editMode={editMode}
+          setEditMode={setEditMode}
+          setSelectedEvent={setSelectedEvent}
         />
       </Container>
     </Fragment>

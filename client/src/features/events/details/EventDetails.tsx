@@ -5,9 +5,14 @@ import { IEvent } from "../../../app/models/event";
 interface IProps {
   event: IEvent;
   setEditMode: (editMode: boolean) => void;
+  setSelectedEvent: (event: IEvent | null) => void;
 }
 
-const EventDetails: React.FC<IProps> = ({ event, setEditMode }) => {
+const EventDetails: React.FC<IProps> = ({
+  event,
+  setEditMode,
+  setSelectedEvent
+}) => {
   return (
     <Card fluid>
       <Image
@@ -32,7 +37,12 @@ const EventDetails: React.FC<IProps> = ({ event, setEditMode }) => {
             color="blue"
             content="Edit"
           />
-          <Button basic color="grey" content="Cancel" />
+          <Button
+            onClick={() => setSelectedEvent(null)}
+            basic
+            color="grey"
+            content="Cancel"
+          />
         </Button.Group>
       </Card.Content>
     </Card>

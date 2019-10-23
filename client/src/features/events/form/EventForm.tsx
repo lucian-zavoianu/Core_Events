@@ -1,9 +1,13 @@
 import React from "react";
-import { Segment, Form } from "semantic-ui-react";
+import { Segment, Form, Button } from "semantic-ui-react";
 
-const EventForm = () => {
+interface IProps {
+  setEditMode: (editMode: boolean) => void;
+}
+
+const EventForm: React.FC<IProps> = ({ setEditMode }) => {
   return (
-    <Segment>
+    <Segment clearing>
       <Form>
         <Form.Input placeholder="Title" />
         <Form.TextArea
@@ -15,6 +19,13 @@ const EventForm = () => {
         <Form.Input type="date" placeholder="Date" />
         <Form.Input placeholder="City" />
         <Form.Input placeholder="Venue" />
+        <Button floated="right" positive type="submit" content="Submit" />
+        <Button
+          onClick={() => setEditMode(false)}
+          floated="right"
+          type="submit"
+          content="Cancel"
+        />
       </Form>
     </Segment>
   );
