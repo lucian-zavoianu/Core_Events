@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, FormEvent } from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { IEvent } from "../../../app/models/event";
 
@@ -29,20 +29,61 @@ const EventForm: React.FC<IProps> = ({
 
   const [event, setEvent] = useState<IEvent>(initializeForm);
 
+  const handleSubmit = () => {
+    console.log(event);
+  };
+
+  const handleInputChange = (
+    formEvent: FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = formEvent.currentTarget;
+    setEvent({ ...event, [name]: value });
+    // Without Object Destructuring:
+    // setEvent({...event, [formEvent.target.name]: formEvent.target.value});
+  };
+
   return (
     <Segment clearing>
-      <Form>
-        <Form.Input placeholder="Title" value={event.title} />
+      <Form onSubmit={handleSubmit}>
+        <Form.Input
+          onChange={handleInputChange}
+          name="title"
+          placeholder="Title"
+          value={event.title}
+        />
         <Form.TextArea
+          onChange={handleInputChange}
+          name="description"
           rows={3}
           placeholder="Description"
           style={{ resize: "none" }}
           value={event.description}
         />
-        <Form.Input placeholder="Category" value={event.category} />
-        <Form.Input type="date" placeholder="Date" value={event.date} />
-        <Form.Input placeholder="City" value={event.city} />
-        <Form.Input placeholder="Venue" value={event.venue} />
+        <Form.Input
+          onChange={handleInputChange}
+          name="category"
+          placeholder="Category"
+          value={event.category}
+        />
+        <Form.Input
+          onChange={handleInputChange}
+          name="date"
+          type="date"
+          placeholder="Date"
+          value={event.date}
+        />
+        <Form.Input
+          onChange={handleInputChange}
+          name="city"
+          placeholder="City"
+          value={event.city}
+        />
+        <Form.Input
+          onChange={handleInputChange}
+          name="venue"
+          placeholder="Venue"
+          value={event.venue}
+        />
         <Button floated="right" positive type="submit" content="Submit" />
         <Button
           onClick={() => setEditMode(false)}
