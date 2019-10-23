@@ -3,7 +3,7 @@ import { Container } from "semantic-ui-react";
 import { IEvent } from "../models/event";
 import Navbar from "../../features/nav/Navbar";
 import EventsDashboard from "../../features/events/dashboard/EventsDashboard";
-import agent from '../api/agent';
+import agent from "../api/agent";
 
 const App = () => {
   const [events, setEvents] = useState<IEvent[]>([]);
@@ -21,32 +21,37 @@ const App = () => {
   };
 
   const handleCreateEvent = (event: IEvent) => {
-    setEvents([...events, event]);
-    setSelectedEvent(event);
-    setEditMode(false);
+    agent.Events.create(event).then(() => {
+      setEvents([...events, event]);
+      setSelectedEvent(event);
+      setEditMode(false);
+    });
   };
 
   const handleEditEvent = (event: IEvent) => {
-    setEvents([...events.filter(e => e.id !== event.id), event]);
-    setSelectedEvent(event);
-    setEditMode(false);
+    agent.Events.update(event).then(() => {
+      setEvents([...events.filter(e => e.id !== event.id), event]);
+      setSelectedEvent(event);
+      setEditMode(false);
+    });
   };
 
   const handleDeleteEvent = (id: string) => {
-    setEvents([...events.filter(e => e.id !== id)]);
+    agent.Events.delete(id).then(() => {
+      setEvents([...events.filter(e => e.id !== id)]);
+    });
   };
 
   useEffect(() => {
-    agent.Events.list()
-      .then(response => {
-        let events: IEvent[] = [];
-        response.forEach(event => {
-          event.date = event.date.split(".")[0];
-          events.push(event);
-        });
-
-        setEvents(events);
+    agent.Events.list().then(response => {
+      let events: IEvent[] = [];
+      response.forEach(event => {
+        event.date = event.date.split(".")[0];
+        events.push(event);
       });
+
+      setEvents(events);
+    });
   }, []); // [] Stops the component from entering a loop, as there is nothing to stop it from running every single time the component will render
 
   return (
