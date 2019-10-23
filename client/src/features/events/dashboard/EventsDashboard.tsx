@@ -36,7 +36,9 @@ const EventsDashboard: React.FC<IProps> = ({
             setSelectedEvent={setSelectedEvent}
           />
         )}
-        {editMode && <EventForm setEditMode={setEditMode} />}
+        {editMode && (
+          <EventForm setEditMode={setEditMode} event={selectedEvent!} />
+        )}
       </Grid.Column>
     </Grid>
   );
