@@ -12,6 +12,7 @@ const App = () => {
 
   const handleSelectEvent = (id: string) => {
     setSelectedEvent(events.filter(e => e.id === id)[0]);
+    setEditMode(false);
   };
 
   const handleOpenCreateForm = () => {
@@ -35,7 +36,13 @@ const App = () => {
     axios
       .get<IEvent[]>("http://localhost:5000/api/events")
       .then((response: any) => {
-        setEvents(response.data);
+        let events: IEvent[] = [];
+        response.data.forEach((event: any) => {
+          event.date = event.date.split('.')[0];
+          events.push(event);
+        });
+
+        setEvents(events);
       });
   }, []); // [] Stops the component from entering a loop, as there is nothing to stop it from running every single time the component will render
 

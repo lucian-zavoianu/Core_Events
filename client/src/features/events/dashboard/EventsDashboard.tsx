@@ -42,6 +42,7 @@ const EventsDashboard: React.FC<IProps> = ({
         )}
         {editMode && (
           <EventForm
+            key={(selectedEvent && selectedEvent.id) || 0}
             setEditMode={setEditMode}
             event={selectedEvent!}
             createEvent={createEvent}
