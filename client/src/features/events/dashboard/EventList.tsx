@@ -6,7 +6,7 @@ interface IProps {
   events: IEvent[];
 }
 
-const EventsList: React.FC<IProps> = ({ events }) => {
+const EventList: React.FC<IProps> = ({ events }) => {
   return (
     <Segment clearing>
       <Item.Group divided>
@@ -31,4 +31,4 @@ const EventsList: React.FC<IProps> = ({ events }) => {
   );
 };
 
-export default EventsList;
+export default EventList;
