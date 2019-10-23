@@ -1,8 +1,9 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { List, Container } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import axios from "axios";
 import { IEvent } from "../models/event";
 import Navbar from "../../features/nav/Navbar";
+import EventsDashboard from "../../features/events/dashboard/EventsDashboard";
 
 const App = () => {
   const [events, setEvents] = useState<IEvent[]>([]);
@@ -20,11 +21,7 @@ const App = () => {
       <Navbar />
 
       <Container style={{ marginTop: '100px' }}>
-        <List>
-          {events.map(event => (
-            <List.Item key={event.id}>{event.title}</List.Item>
-          ))}
-        </List>
+        <EventsDashboard events = { events } />
       </Container>
     </Fragment>
   );
