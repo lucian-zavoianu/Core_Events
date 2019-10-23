@@ -5,9 +5,10 @@ import { IEvent } from "../../../app/models/event";
 interface IProps {
   events: IEvent[];
   selectEvent: (id: string) => void;
+  deleteEvent: (id: string) => void;
 }
 
-const EventList: React.FC<IProps> = ({ events, selectEvent }) => {
+const EventList: React.FC<IProps> = ({ events, selectEvent, deleteEvent }) => {
   return (
     <Segment clearing>
       <Item.Group divided>
@@ -28,6 +29,13 @@ const EventList: React.FC<IProps> = ({ events, selectEvent }) => {
                   floated="right"
                   content="View"
                   color="blue"
+                ></Button>
+                
+                <Button
+                  onClick={() => deleteEvent(event.id)}
+                  floated="right"
+                  content="Delete"
+                  color="red"
                 ></Button>
                 <Label basic content={event.category} />
               </Item.Extra>

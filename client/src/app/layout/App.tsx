@@ -32,13 +32,17 @@ const App = () => {
     setEditMode(false);
   };
 
+  const handleDeleteEvent = (id: string) => {
+    setEvents([...events.filter(e => e.id !== id)]);
+  };
+
   useEffect(() => {
     axios
       .get<IEvent[]>("http://localhost:5000/api/events")
       .then((response: any) => {
         let events: IEvent[] = [];
         response.data.forEach((event: any) => {
-          event.date = event.date.split('.')[0];
+          event.date = event.date.split(".")[0];
           events.push(event);
         });
 
@@ -60,6 +64,7 @@ const App = () => {
           setSelectedEvent={setSelectedEvent}
           createEvent={handleCreateEvent}
           editEvent={handleEditEvent}
+          deleteEvent={handleDeleteEvent}
         />
       </Container>
     </Fragment>
