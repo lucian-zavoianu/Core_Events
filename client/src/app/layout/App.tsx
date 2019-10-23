@@ -1,9 +1,9 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Container } from "semantic-ui-react";
-import axios from "axios";
 import { IEvent } from "../models/event";
 import Navbar from "../../features/nav/Navbar";
 import EventsDashboard from "../../features/events/dashboard/EventsDashboard";
+import agent from '../api/agent';
 
 const App = () => {
   const [events, setEvents] = useState<IEvent[]>([]);
@@ -37,11 +37,10 @@ const App = () => {
   };
 
   useEffect(() => {
-    axios
-      .get<IEvent[]>("http://localhost:5000/api/events")
-      .then((response: any) => {
+    agent.Events.list()
+      .then(response => {
         let events: IEvent[] = [];
-        response.data.forEach((event: any) => {
+        response.forEach(event => {
           event.date = event.date.split(".")[0];
           events.push(event);
         });

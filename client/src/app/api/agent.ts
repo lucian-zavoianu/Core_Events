@@ -13,7 +13,7 @@ const requests = {
 }
 
 const Events = {
-    list: () => requests.get('/events'),
+    list: (): Promise<IEvent[]> => requests.get('/events'),
     details: (id: string) => requests.get(`/events/${id}`),
     create: (event: IEvent) => requests.post('/events', event),
     update: (event: IEvent) => requests.put(`/events/${event.id}`, event),
