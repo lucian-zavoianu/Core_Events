@@ -19,6 +19,18 @@ const App = () => {
     setEditMode(true);
   };
 
+  const handleCreateEvent = (event: IEvent) => {
+    setEvents([...events, event]);
+    setSelectedEvent(event);
+    setEditMode(false);
+  };
+
+  const handleEditEvent = (event: IEvent) => {
+    setEvents([...events.filter(e => e.id !== event.id), event]);
+    setSelectedEvent(event);
+    setEditMode(false);
+  };
+
   useEffect(() => {
     axios
       .get<IEvent[]>("http://localhost:5000/api/events")
@@ -39,6 +51,8 @@ const App = () => {
           editMode={editMode}
           setEditMode={setEditMode}
           setSelectedEvent={setSelectedEvent}
+          createEvent={handleCreateEvent}
+          editEvent={handleEditEvent}
         />
       </Container>
     </Fragment>

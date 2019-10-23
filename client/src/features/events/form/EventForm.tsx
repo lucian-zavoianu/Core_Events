@@ -1,15 +1,21 @@
 import React, { useState, FormEvent } from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { IEvent } from "../../../app/models/event";
+import { v4 as uuid } from 'uuid';
+
 
 interface IProps {
   setEditMode: (editMode: boolean) => void;
   event: IEvent;
+  createEvent: (event: IEvent) => void;
+  editEvent: (event: IEvent) => void;
 }
 
 const EventForm: React.FC<IProps> = ({
   setEditMode,
-  event: initialFormState
+  event: initialFormState,
+  createEvent,
+  editEvent
 }) => {
   const initializeForm = () => {
     if (initialFormState) {
@@ -30,7 +36,16 @@ const EventForm: React.FC<IProps> = ({
   const [event, setEvent] = useState<IEvent>(initializeForm);
 
   const handleSubmit = () => {
-    console.log(event);
+    if (event.id.length === 0) {
+      let newEvent = {
+        ...event,
+        id: uuid()
+      }
+
+      createEvent(newEvent);
+    } else {
+      editEvent(event);
+    }
   };
 
   const handleInputChange = (
