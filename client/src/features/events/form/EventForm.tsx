@@ -1,21 +1,22 @@
 import React, { useState, FormEvent } from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { IEvent } from "../../../app/models/event";
-import { v4 as uuid } from 'uuid';
-
+import { v4 as uuid } from "uuid";
 
 interface IProps {
   setEditMode: (editMode: boolean) => void;
   event: IEvent;
   createEvent: (event: IEvent) => void;
   editEvent: (event: IEvent) => void;
+  submitting: boolean;
 }
 
 const EventForm: React.FC<IProps> = ({
   setEditMode,
   event: initialFormState,
   createEvent,
-  editEvent
+  editEvent,
+  submitting
 }) => {
   const initializeForm = () => {
     if (initialFormState) {
@@ -40,7 +41,7 @@ const EventForm: React.FC<IProps> = ({
       let newEvent = {
         ...event,
         id: uuid()
-      }
+      };
 
       createEvent(newEvent);
     } else {
@@ -99,7 +100,13 @@ const EventForm: React.FC<IProps> = ({
           placeholder="Venue"
           value={event.venue}
         />
-        <Button floated="right" positive type="submit" content="Submit" />
+        <Button
+          loading={submitting}
+          floated="right"
+          positive
+          type="submit"
+          content="Submit"
+        />
         <Button
           onClick={() => setEditMode(false)}
           floated="right"

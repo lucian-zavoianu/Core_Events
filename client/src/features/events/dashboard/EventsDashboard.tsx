@@ -15,6 +15,7 @@ interface IProps {
   createEvent: (event: IEvent) => void;
   editEvent: (event: IEvent) => void;
   deleteEvent: (id: string) => void;
+  submitting: boolean;
 }
 
 const EventsDashboard: React.FC<IProps> = ({
@@ -26,7 +27,8 @@ const EventsDashboard: React.FC<IProps> = ({
   setSelectedEvent,
   createEvent,
   editEvent,
-  deleteEvent
+  deleteEvent,
+  submitting
 }) => {
   return (
     <Grid>
@@ -35,6 +37,7 @@ const EventsDashboard: React.FC<IProps> = ({
           events={events}
           selectEvent={selectEvent}
           deleteEvent={deleteEvent}
+          submitting={submitting}
         />
       </Grid.Column>
 
@@ -53,6 +56,7 @@ const EventsDashboard: React.FC<IProps> = ({
             event={selectedEvent!}
             createEvent={createEvent}
             editEvent={editEvent}
+            submitting={submitting}
           />
         )}
       </Grid.Column>

@@ -11,6 +11,7 @@ const App = () => {
   const [selectedEvent, setSelectedEvent] = useState<IEvent | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSelectEvent = (id: string) => {
     setSelectedEvent(events.filter(e => e.id === id)[0]);
@@ -23,41 +24,54 @@ const App = () => {
   };
 
   const handleCreateEvent = (event: IEvent) => {
-    agent.Events.create(event).then(() => {
-      setEvents([...events, event]);
-      setSelectedEvent(event);
-      setEditMode(false);
-    });
+    setSubmitting(true);
+
+    agent.Events.create(event)
+      .then(() => {
+        setEvents([...events, event]);
+        setSelectedEvent(event);
+        setEditMode(false);
+      })
+      .then(() => setSubmitting(false));
   };
 
   const handleEditEvent = (event: IEvent) => {
-    agent.Events.update(event).then(() => {
-      setEvents([...events.filter(e => e.id !== event.id), event]);
-      setSelectedEvent(event);
-      setEditMode(false);
-    });
+    setSubmitting(true);
+
+    agent.Events.update(event)
+      .then(() => {
+        setEvents([...events.filter(e => e.id !== event.id), event]);
+        setSelectedEvent(event);
+        setEditMode(false);
+      })
+      .then(() => setSubmitting(false));
   };
 
   const handleDeleteEvent = (id: string) => {
-    agent.Events.delete(id).then(() => {
-      setEvents([...events.filter(e => e.id !== id)]);
-    });
+    setSubmitting(true);
+
+    agent.Events.delete(id)
+      .then(() => {
+        setEvents([...events.filter(e => e.id !== id)]);
+      })
+      .then(() => setSubmitting(false));
   };
 
   useEffect(() => {
-    agent.Events.list().then(response => {
-      let events: IEvent[] = [];
-      response.forEach(event => {
-        event.date = event.date.split(".")[0];
-        events.push(event);
-      });
+    agent.Events.list()
+      .then(response => {
+        let events: IEvent[] = [];
+        response.forEach(event => {
+          event.date = event.date.split(".")[0];
+          events.push(event);
+        });
 
-      setEvents(events);
-    })
-    .then(() => setLoading(false));
+        setEvents(events);
+      })
+      .then(() => setLoading(false));
   }, []); // [] Stops the component from entering a loop, as there is nothing to stop it from running every single time the component will render
 
-  if (loading) return <LoadingComponent content='Loading Events...' />
+  if (loading) return <LoadingComponent content="Loading Events..." />;
 
   return (
     <Fragment>
@@ -74,6 +88,7 @@ const App = () => {
           createEvent={handleCreateEvent}
           editEvent={handleEditEvent}
           deleteEvent={handleDeleteEvent}
+          submitting={submitting}
         />
       </Container>
     </Fragment>
