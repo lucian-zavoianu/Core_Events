@@ -1,16 +1,15 @@
-import React, { SyntheticEvent } from "react";
+import React, { SyntheticEvent, useContext } from "react";
 import { Grid } from "semantic-ui-react";
 import { IEvent } from "../../../app/models/event";
 import EventList from "./EventList";
 import EventDetails from "../details/EventDetails";
 import EventForm from "../form/EventForm";
 import { observer } from "mobx-react-lite";
+import EventStore from "../../../app/stores/eventStore";
 
 interface IProps {
   events: IEvent[];
   selectEvent: (id: string) => void;
-  selectedEvent: IEvent | null;
-  editMode: boolean;
   setEditMode: (editMode: boolean) => void;
   setSelectedEvent: (event: IEvent | null) => void;
   createEvent: (event: IEvent) => void;
@@ -23,8 +22,6 @@ interface IProps {
 const EventsDashboard: React.FC<IProps> = ({
   events,
   selectEvent,
-  selectedEvent,
-  editMode,
   setEditMode,
   setSelectedEvent,
   createEvent,
@@ -33,12 +30,13 @@ const EventsDashboard: React.FC<IProps> = ({
   submitting,
   target
 }) => {
+  const eventStore = useContext(EventStore);
+  const { editMode, selectedEvent } = eventStore;
+
   return (
     <Grid>
       <Grid.Column width={10}>
         <EventList
-          events={events}
-          selectEvent={selectEvent}
           deleteEvent={deleteEvent}
           submitting={submitting}
           target={target}
@@ -48,7 +46,6 @@ const EventsDashboard: React.FC<IProps> = ({
       <Grid.Column width={6}>
         {selectedEvent && !editMode && (
           <EventDetails
-            event={selectedEvent}
             setEditMode={setEditMode}
             setSelectedEvent={setSelectedEvent}
           />

@@ -1,32 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card, Image, Button } from "semantic-ui-react";
 import { IEvent } from "../../../app/models/event";
+import EventStore from "../../../app/stores/eventStore";
+import { observer } from "mobx-react-lite";
 
 interface IProps {
-  event: IEvent;
   setEditMode: (editMode: boolean) => void;
   setSelectedEvent: (event: IEvent | null) => void;
 }
 
 const EventDetails: React.FC<IProps> = ({
-  event,
   setEditMode,
   setSelectedEvent
 }) => {
+  const eventStore = useContext(EventStore);
+  const { selectedEvent: event } = eventStore;
+  
   return (
     <Card fluid>
       <Image
-        src={`/assets/categoryImages/${event.category}.jpg`}
+        src={`/assets/categoryImages/${event!.category}.jpg`}
         wrapped
         ui={false}
       />
 
       <Card.Content>
-        <Card.Header>{event.title}</Card.Header>
+        <Card.Header>{event!.title}</Card.Header>
         <Card.Meta>
-          <span>{event.date}</span>
+          <span>{event!.date}</span>
         </Card.Meta>
-        <Card.Description>{event.description}</Card.Description>
+        <Card.Description>{event!.description}</Card.Description>
       </Card.Content>
 
       <Card.Content extra>
@@ -49,4 +52,4 @@ const EventDetails: React.FC<IProps> = ({
   );
 };
 
-export default EventDetails;
+export default observer(EventDetails);

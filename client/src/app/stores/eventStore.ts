@@ -5,7 +5,9 @@ import agent from '../api/agent';
 
 class EventStore {
     @observable events: IEvent[] = [];
+    @observable selectedEvent: IEvent | undefined;
     @observable loadingInitial = false;
+    @observable editMode = false;
 
     @action loadEvents = () => {
         this.loadingInitial = true;
@@ -18,6 +20,11 @@ class EventStore {
                 });
             })
             .finally(() => this.loadingInitial = false);
+    }
+
+    @action selectEvent = (id: string) => {
+        this.selectedEvent = this.events.find(e => e.id === id);
+        this.editMode = false;
     }
 }
 

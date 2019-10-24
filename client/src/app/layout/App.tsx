@@ -77,8 +77,6 @@ const App = () => {
         <EventsDashboard
           events={eventStore.events}
           selectEvent={handleSelectEvent}
-          selectedEvent={selectedEvent}
-          editMode={editMode}
           setEditMode={setEditMode}
           setSelectedEvent={setSelectedEvent}
           createEvent={handleCreateEvent}

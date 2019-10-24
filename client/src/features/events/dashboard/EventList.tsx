@@ -1,23 +1,22 @@
-import React, { SyntheticEvent } from "react";
+import React, { SyntheticEvent, useContext } from "react";
 import { Item, Button, Label, Segment } from "semantic-ui-react";
-import { IEvent } from "../../../app/models/event";
 import { observer } from "mobx-react-lite";
+import EventStore from "../../../app/stores/eventStore";
 
 interface IProps {
-  events: IEvent[];
-  selectEvent: (id: string) => void;
   deleteEvent: (e: SyntheticEvent<HTMLButtonElement>, id: string) => void;
   submitting: boolean;
   target: string;
 }
 
 const EventList: React.FC<IProps> = ({
-  events,
-  selectEvent,
   deleteEvent,
   submitting,
   target
 }) => {
+  const eventStore = useContext(EventStore);
+  const { events, selectEvent } = eventStore;
+
   return (
     <Segment clearing>
       <Item.Group divided>
