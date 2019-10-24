@@ -6,6 +6,7 @@ import EventsDashboard from "../../features/events/dashboard/EventsDashboard";
 import agent from "../api/agent";
 import LoadingComponent from "./LoadingComponent";
 import EventStore from "../stores/eventStore";
+import { observer } from "mobx-react-lite";
 
 const App = () => {
   const eventStore = useContext(EventStore);
@@ -63,20 +64,10 @@ const App = () => {
   };
 
   useEffect(() => {
-    agent.Events.list()
-      .then(response => {
-        let events: IEvent[] = [];
-        response.forEach(event => {
-          event.date = event.date.split(".")[0];
-          events.push(event);
-        });
+    eventStore.loadEvents();
+  }, [eventStore]); // [] Stops the component from entering a loop, as there is nothing to stop it from running every single time the component will render
 
-        setEvents(events);
-      })
-      .then(() => setLoading(false));
-  }, []); // [] Stops the component from entering a loop, as there is nothing to stop it from running every single time the component will render
-
-  if (loading) return <LoadingComponent content="Loading Events..." />;
+  if (eventStore.loadingInitial) return <LoadingComponent content="Loading Events..." />;
 
   return (
     <Fragment>
@@ -84,7 +75,7 @@ const App = () => {
 
       <Container style={{ marginTop: "100px" }}>
         <EventsDashboard
-          events={events}
+          events={eventStore.events}
           selectEvent={handleSelectEvent}
           selectedEvent={selectedEvent}
           editMode={editMode}
@@ -101,4 +92,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default observer(App);

@@ -1,6 +1,7 @@
 import React, { SyntheticEvent } from "react";
 import { Item, Button, Label, Segment } from "semantic-ui-react";
 import { IEvent } from "../../../app/models/event";
+import { observer } from "mobx-react-lite";
 
 interface IProps {
   events: IEvent[];
@@ -59,4 +60,4 @@ const EventList: React.FC<IProps> = ({
   );
 };
 
-export default EventList;
+export default observer(EventList);

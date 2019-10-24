@@ -4,6 +4,7 @@ import { IEvent } from "../../../app/models/event";
 import EventList from "./EventList";
 import EventDetails from "../details/EventDetails";
 import EventForm from "../form/EventForm";
+import { observer } from "mobx-react-lite";
 
 interface IProps {
   events: IEvent[];
@@ -67,4 +68,4 @@ const EventsDashboard: React.FC<IProps> = ({
   );
 };
 
-export default EventsDashboard;
+export default observer(EventsDashboard);
