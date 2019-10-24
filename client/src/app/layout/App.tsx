@@ -1,12 +1,15 @@
-import React, { useState, useEffect, Fragment, SyntheticEvent } from "react";
+import React, { useState, useEffect, Fragment, SyntheticEvent, useContext } from "react";
 import { Container } from "semantic-ui-react";
 import { IEvent } from "../models/event";
 import Navbar from "../../features/nav/Navbar";
 import EventsDashboard from "../../features/events/dashboard/EventsDashboard";
 import agent from "../api/agent";
 import LoadingComponent from "./LoadingComponent";
+import EventStore from "../stores/eventStore";
 
 const App = () => {
+  const eventStore = useContext(EventStore);
+
   const [events, setEvents] = useState<IEvent[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<IEvent | null>(null);
   const [editMode, setEditMode] = useState(false);
