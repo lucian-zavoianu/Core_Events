@@ -4,11 +4,13 @@ import { IEvent } from "../models/event";
 import Navbar from "../../features/nav/Navbar";
 import EventsDashboard from "../../features/events/dashboard/EventsDashboard";
 import agent from "../api/agent";
+import LoadingComponent from "./LoadingComponent";
 
 const App = () => {
   const [events, setEvents] = useState<IEvent[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<IEvent | null>(null);
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleSelectEvent = (id: string) => {
     setSelectedEvent(events.filter(e => e.id === id)[0]);
@@ -51,8 +53,11 @@ const App = () => {
       });
 
       setEvents(events);
-    });
+    })
+    .then(() => setLoading(false));
   }, []); // [] Stops the component from entering a loop, as there is nothing to stop it from running every single time the component will render
+
+  if (loading) return <LoadingComponent content='Loading Events...' />
 
   return (
     <Fragment>
