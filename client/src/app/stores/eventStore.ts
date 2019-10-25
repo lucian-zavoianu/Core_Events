@@ -9,17 +9,21 @@ class EventStore {
     @observable loadingInitial = false;
     @observable editMode = false;
 
-    @action loadEvents = () => {
+    @action loadEvents = async () => {
         this.loadingInitial = true;
 
-        agent.Events.list()
-            .then(events => {
-                events.forEach(event => {
-                    event.date = event.date.split(".")[0];
-                    this.events.push(event);
-                });
-            })
-            .finally(() => this.loadingInitial = false);
+        try {
+            const events = await agent.Events.list();
+            events.forEach(event => {
+                event.date = event.date.split(".")[0];
+                this.events.push(event);
+            });
+            
+            this.loadingInitial = false
+        } catch (error) {
+            console.log(error);
+            this.loadingInitial = false
+        }
     }
 
     @action selectEvent = (id: string) => {
