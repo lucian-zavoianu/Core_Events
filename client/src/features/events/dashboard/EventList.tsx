@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useContext } from "react";
+import React, { useContext } from "react";
 import { Item, Button, Label, Segment } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 import EventStore from "../../../app/stores/eventStore";
@@ -32,9 +32,7 @@ const EventList: React.FC = () => {
                 <Button
                   name={event.id}
                   loading={target === event.id && submitting}
-                  onClick={(e: SyntheticEvent<HTMLButtonElement>) =>
-                    deleteEvent(e, event.id)
-                  }
+                  onClick={(e) => deleteEvent(e, event.id)}
                   floated="right"
                   content="Delete"
                   color="red"
