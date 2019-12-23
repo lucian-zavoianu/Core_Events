@@ -12,23 +12,8 @@ const App = () => {
   const eventStore = useContext(EventStore);
 
   const [events, setEvents] = useState<IEvent[]>([]);
-  const [selectedEvent, setSelectedEvent] = useState<IEvent | null>(null);
-  const [editMode, setEditMode] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [target, setTarget] = useState('');
-
-  const handleEditEvent = (event: IEvent) => {
-    setSubmitting(true);
-
-    agent.Events.update(event)
-      .then(() => {
-        setEvents([...events.filter(e => e.id !== event.id), event]);
-        setSelectedEvent(event);
-        setEditMode(false);
-      })
-      .then(() => setSubmitting(false));
-  };
 
   const handleDeleteEvent = (event: SyntheticEvent<HTMLButtonElement>, id: string) => {
     setSubmitting(true);
@@ -53,9 +38,6 @@ const App = () => {
 
       <Container style={{ marginTop: "100px" }}>
         <EventsDashboard
-          setEditMode={setEditMode}
-          setSelectedEvent={setSelectedEvent}
-          editEvent={handleEditEvent}
           deleteEvent={handleDeleteEvent}
           submitting={submitting}
           target={target}

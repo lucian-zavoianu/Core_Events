@@ -5,20 +5,14 @@ import { v4 as uuid } from "uuid";
 import EventStore from "../../../app/stores/eventStore";
 
 interface IProps {
-  setEditMode: (editMode: boolean) => void;
   event: IEvent;
-  editEvent: (event: IEvent) => void;
-  submitting: boolean;
 }
 
 const EventForm: React.FC<IProps> = ({
-  setEditMode,
-  event: initialFormState,
-  editEvent,
-  submitting
+  event: initialFormState
 }) => {
   const eventStore = useContext(EventStore);
-  const { createEvent } = eventStore;
+  const { createEvent, editEvent, submitting, cancelFormOpen } = eventStore;
 
   const initializeForm = () => {
     if (initialFormState) {
@@ -110,7 +104,7 @@ const EventForm: React.FC<IProps> = ({
           content="Submit"
         />
         <Button
-          onClick={() => setEditMode(false)}
+          onClick={cancelFormOpen}
           floated="right"
           type="submit"
           content="Cancel"

@@ -48,9 +48,37 @@ class EventStore {
         }
     };
 
+    @action editEvent = async (event: IEvent) => {
+        this.submitting = true;
+
+        try {
+            await agent.Events.update(event);
+            this.eventRegistry.set(event.id, event);
+            this.selectedEvent = event;
+            this.editMode = false;
+            this.submitting = false;
+        } catch (error) {
+            this.submitting = false;
+            console.log(error);
+        }
+    }
+
     @action openCreateForm = () => {
         this.editMode = true;
         this.selectedEvent = undefined;
+    }
+
+    @action openEditForm = (id: string) => {
+        this.selectedEvent = this.eventRegistry.get(id);
+        this.editMode = true;
+    }
+
+    @action cancelSelectedEvent = () => {
+        this.selectedEvent = undefined;
+    }
+
+    @action cancelFormOpen = () => {
+        this.editMode = false;
     }
 
     @action selectEvent = (id: string) => {
