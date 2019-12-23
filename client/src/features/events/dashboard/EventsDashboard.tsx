@@ -8,11 +8,8 @@ import { observer } from "mobx-react-lite";
 import EventStore from "../../../app/stores/eventStore";
 
 interface IProps {
-  events: IEvent[];
-  selectEvent: (id: string) => void;
   setEditMode: (editMode: boolean) => void;
   setSelectedEvent: (event: IEvent | null) => void;
-  createEvent: (event: IEvent) => void;
   editEvent: (event: IEvent) => void;
   deleteEvent: (e: SyntheticEvent<HTMLButtonElement>, id: string) => void;
   submitting: boolean;
@@ -20,11 +17,8 @@ interface IProps {
 }
 
 const EventsDashboard: React.FC<IProps> = ({
-  events,
-  selectEvent,
   setEditMode,
   setSelectedEvent,
-  createEvent,
   editEvent,
   deleteEvent,
   submitting,
@@ -55,7 +49,6 @@ const EventsDashboard: React.FC<IProps> = ({
             key={(selectedEvent && selectedEvent.id) || 0}
             setEditMode={setEditMode}
             event={selectedEvent!}
-            createEvent={createEvent}
             editEvent={editEvent}
             submitting={submitting}
           />

@@ -18,28 +18,6 @@ const App = () => {
   const [submitting, setSubmitting] = useState(false);
   const [target, setTarget] = useState('');
 
-  const handleSelectEvent = (id: string) => {
-    setSelectedEvent(events.filter(e => e.id === id)[0]);
-    setEditMode(false);
-  };
-
-  const handleOpenCreateForm = () => {
-    setSelectedEvent(null);
-    setEditMode(true);
-  };
-
-  const handleCreateEvent = (event: IEvent) => {
-    setSubmitting(true);
-
-    agent.Events.create(event)
-      .then(() => {
-        setEvents([...events, event]);
-        setSelectedEvent(event);
-        setEditMode(false);
-      })
-      .then(() => setSubmitting(false));
-  };
-
   const handleEditEvent = (event: IEvent) => {
     setSubmitting(true);
 
@@ -71,15 +49,12 @@ const App = () => {
 
   return (
     <Fragment>
-      <Navbar openCreateForm={handleOpenCreateForm} />
+      <Navbar />
 
       <Container style={{ marginTop: "100px" }}>
         <EventsDashboard
-          events={eventStore.events}
-          selectEvent={handleSelectEvent}
           setEditMode={setEditMode}
           setSelectedEvent={setSelectedEvent}
-          createEvent={handleCreateEvent}
           editEvent={handleEditEvent}
           deleteEvent={handleDeleteEvent}
           submitting={submitting}

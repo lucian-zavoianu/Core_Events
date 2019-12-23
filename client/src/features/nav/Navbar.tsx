@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Menu, Container, Button } from "semantic-ui-react";
+import EventStore from "../../app/stores/eventStore";
+import { observer } from "mobx-react-lite";
 
-interface IProps {
-  openCreateForm: () => void;
-}
+const Navbar: React.FC = () => {
+  const eventStore = useContext(EventStore);
 
-const Navbar: React.FC<IProps> = ({ openCreateForm }) => {
   return (
     <Menu fixed="top" inverted>
       <Container>
@@ -19,11 +19,11 @@ const Navbar: React.FC<IProps> = ({ openCreateForm }) => {
         </Menu.Item>
         <Menu.Item name="messages" />
         <Menu.Item>
-          <Button onClick={openCreateForm} positive content="Create Event" />
+          <Button onClick={eventStore.openCreateForm} positive content="Create Event" />
         </Menu.Item>
       </Container>
     </Menu>
   );
 };
 
-export default Navbar;
+export default observer(Navbar);
