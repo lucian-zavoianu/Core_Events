@@ -3,19 +3,9 @@ import { Item, Button, Label, Segment } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 import EventStore from "../../../app/stores/eventStore";
 
-interface IProps {
-  deleteEvent: (e: SyntheticEvent<HTMLButtonElement>, id: string) => void;
-  submitting: boolean;
-  target: string;
-}
-
-const EventList: React.FC<IProps> = ({
-  deleteEvent,
-  submitting,
-  target
-}) => {
+const EventList: React.FC = () => {
   const eventStore = useContext(EventStore);
-  const { eventsByDate, selectEvent } = eventStore;
+  const { eventsByDate, selectEvent, deleteEvent, submitting, target } = eventStore;
 
   return (
     <Segment clearing>
