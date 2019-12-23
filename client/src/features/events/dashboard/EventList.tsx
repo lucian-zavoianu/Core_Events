@@ -15,12 +15,12 @@ const EventList: React.FC<IProps> = ({
   target
 }) => {
   const eventStore = useContext(EventStore);
-  const { events, selectEvent } = eventStore;
+  const { eventsByDate, selectEvent } = eventStore;
 
   return (
     <Segment clearing>
       <Item.Group divided>
-        {events.map(event => (
+        {eventsByDate.map(event => (
           <Item key={event.id}>
             <Item.Content>
               <Item.Header as="a">{event.title}</Item.Header>

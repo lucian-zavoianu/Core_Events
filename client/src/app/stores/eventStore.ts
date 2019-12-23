@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { createContext } from 'react';
 import { IEvent } from '../models/event';
 import agent from '../api/agent';
@@ -9,6 +9,10 @@ class EventStore {
     @observable loadingInitial = false;
     @observable editMode = false;
     @observable submitting = false;
+
+    @computed get eventsByDate() {
+        return this.events.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+    }
 
     @action loadEvents = async () => {
         this.loadingInitial = true;
