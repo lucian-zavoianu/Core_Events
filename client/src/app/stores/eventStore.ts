@@ -4,14 +4,17 @@ import { IEvent } from '../models/event';
 import agent from '../api/agent';
 
 class EventStore {
-    @observable events: IEvent[] = [];
+    // The observable map provides more functionality than a plain array
+    // to store the events
+    @observable eventRegistry = new Map();
+    // @observable events: IEvent[] = [];
     @observable selectedEvent: IEvent | undefined;
     @observable loadingInitial = false;
     @observable editMode = false;
     @observable submitting = false;
 
     @computed get eventsByDate() {
-        return this.events.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+        return Array.from(this.eventRegistry.values()).sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
     }
 
     @action loadEvents = async () => {
@@ -21,7 +24,7 @@ class EventStore {
             const events = await agent.Events.list();
             events.forEach(event => {
                 event.date = event.date.split(".")[0];
-                this.events.push(event);
+                this.eventRegistry.set(event.id, event);
             });
 
             this.loadingInitial = false
@@ -36,7 +39,7 @@ class EventStore {
 
         try {
             await agent.Events.create(event);
-            this.events.push(event);
+            this.eventRegistry.set(event.id, event);
             this.editMode = false;
             this.submitting = false;
         } catch (error) {
@@ -51,7 +54,7 @@ class EventStore {
     }
 
     @action selectEvent = (id: string) => {
-        this.selectedEvent = this.events.find(e => e.id === id);
+        this.selectedEvent = this.eventRegistry.get(id);
         this.editMode = false;
     };
 }
