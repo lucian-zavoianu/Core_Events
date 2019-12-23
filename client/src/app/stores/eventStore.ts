@@ -1,13 +1,15 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, configure, runInAction } from 'mobx';
 import { createContext, SyntheticEvent } from 'react';
 import { IEvent } from '../models/event';
 import agent from '../api/agent';
 
+configure({enforceActions: 'always'});
+
 class EventStore {
     // The observable map provides more functionality than a plain array
     // to store the events
-    @observable eventRegistry = new Map();
     // @observable events: IEvent[] = [];
+    @observable eventRegistry = new Map();
     @observable selectedEvent: IEvent | undefined;
     @observable loadingInitial = false;
     @observable editMode = false;
@@ -23,15 +25,21 @@ class EventStore {
 
         try {
             const events = await agent.Events.list();
-            events.forEach(event => {
-                event.date = event.date.split(".")[0];
-                this.eventRegistry.set(event.id, event);
+
+            runInAction('Loading Events', () => {
+                events.forEach(event => {
+                    event.date = event.date.split(".")[0];
+                    this.eventRegistry.set(event.id, event);
+                });
+    
+                this.loadingInitial = false
+            });
+        } catch (error) {
+            runInAction('Loade Events Error', () => {
+                this.loadingInitial = false
             });
 
-            this.loadingInitial = false
-        } catch (error) {
             console.log(error);
-            this.loadingInitial = false
         }
     }
 
@@ -40,11 +48,17 @@ class EventStore {
 
         try {
             await agent.Events.create(event);
-            this.eventRegistry.set(event.id, event);
-            this.editMode = false;
-            this.submitting = false;
+
+            runInAction('Creating Event', () => {
+                this.eventRegistry.set(event.id, event);
+                this.editMode = false;
+                this.submitting = false;
+            });
         } catch (error) {
-            this.submitting = false;
+            runInAction('Create Event Error', () => {
+                this.submitting = false;
+            });
+            
             console.log(error);
         }
     };
@@ -54,12 +68,18 @@ class EventStore {
 
         try {
             await agent.Events.update(event);
-            this.eventRegistry.set(event.id, event);
-            this.selectedEvent = event;
-            this.editMode = false;
-            this.submitting = false;
+
+            runInAction('Editing Event', () => {
+                this.eventRegistry.set(event.id, event);
+                this.selectedEvent = event;
+                this.editMode = false;
+                this.submitting = false;
+            });
         } catch (error) {
-            this.submitting = false;
+            runInAction('Edit Event Error', () => {
+                this.submitting = false;
+            });
+            
             console.log(error);
         }
     }
@@ -70,12 +90,18 @@ class EventStore {
         
         try {
             await agent.Events.delete(id);
-            this.eventRegistry.delete(id);
-            this.submitting = false;
-            this.target = '';
+
+            runInAction('Deleting Event', () => {
+                this.eventRegistry.delete(id);
+                this.submitting = false;
+                this.target = '';
+            });
         } catch (error) {
-            this.submitting = false;
-            this.target = '';
+            runInAction('Delete Event Error', () => {
+                this.submitting = false;
+                this.target = '';
+            });
+            
             console.log(error);
         }
     }

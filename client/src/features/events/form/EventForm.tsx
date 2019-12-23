@@ -3,6 +3,7 @@ import { Segment, Form, Button } from "semantic-ui-react";
 import { IEvent } from "../../../app/models/event";
 import { v4 as uuid } from "uuid";
 import EventStore from "../../../app/stores/eventStore";
+import { observer } from "mobx-react-lite";
 
 interface IProps {
   event: IEvent;
@@ -114,4 +115,4 @@ const EventForm: React.FC<IProps> = ({
   );
 };
 
-export default EventForm;
+export default observer(EventForm);
