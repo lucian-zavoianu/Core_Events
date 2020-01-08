@@ -10,7 +10,7 @@ class EventStore {
     // to store the events
     // @observable events: IEvent[] = [];
     @observable eventRegistry = new Map();
-    @observable selectedEvent: IEvent | undefined;
+    @observable event: IEvent | undefined;
     @observable loadingInitial = false;
     @observable editMode = false;
     @observable submitting = false;
@@ -43,6 +43,36 @@ class EventStore {
         }
     }
 
+    @action loadEvent = async (id: string) => {
+        let event = this.getEvent(id);
+
+        if (event) {
+            this.event = event;
+        } else {
+            this.loadingInitial = true;
+
+            try {
+                event = await agent.Events.details(id);
+
+                runInAction('Getting Event', () => {
+                    this.event = event;
+                    this.loadingInitial = false;
+                });
+            } catch (error) {
+                runInAction('Get Event Error', () => {
+                    this.loadingInitial = false;
+                });
+
+                console.log(error);
+            }
+        }
+    }
+
+    // Helper Method for loadEvent
+    getEvent = (id: string) => {
+        return this.eventRegistry.get(id);
+    }
+
     @action createEvent = async (event: IEvent) => {
         this.submitting = true;
 
@@ -71,7 +101,7 @@ class EventStore {
 
             runInAction('Editing Event', () => {
                 this.eventRegistry.set(event.id, event);
-                this.selectedEvent = event;
+                this.event = event;
                 this.editMode = false;
                 this.submitting = false;
             });
@@ -108,16 +138,16 @@ class EventStore {
 
     @action openCreateForm = () => {
         this.editMode = true;
-        this.selectedEvent = undefined;
+        this.event = undefined;
     }
 
     @action openEditForm = (id: string) => {
-        this.selectedEvent = this.eventRegistry.get(id);
+        this.event = this.eventRegistry.get(id);
         this.editMode = true;
     }
 
     @action cancelSelectedEvent = () => {
-        this.selectedEvent = undefined;
+        this.event = undefined;
     }
 
     @action cancelFormOpen = () => {
@@ -125,7 +155,7 @@ class EventStore {
     }
 
     @action selectEvent = (id: string) => {
-        this.selectedEvent = this.eventRegistry.get(id);
+        this.event = this.eventRegistry.get(id);
         this.editMode = false;
     };
 }

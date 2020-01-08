@@ -8,7 +8,7 @@ import EventStore from "../../../app/stores/eventStore";
 
 const EventsDashboard: React.FC = () => {
   const eventStore = useContext(EventStore);
-  const { editMode, selectedEvent } = eventStore;
+  const { editMode, event } = eventStore;
 
   return (
     <Grid>
@@ -17,15 +17,7 @@ const EventsDashboard: React.FC = () => {
       </Grid.Column>
 
       <Grid.Column width={6}>
-        {selectedEvent && !editMode && (
-          <EventDetails />
-        )}
-        {editMode && (
-          <EventForm
-            key={(selectedEvent && selectedEvent.id) || 0}
-            event={selectedEvent!}
-          />
-        )}
+        <h2>Event Filters</h2>
       </Grid.Column>
     </Grid>
   );
