@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Menu, Container, Button } from "semantic-ui-react";
 import EventStore from "../../app/stores/eventStore";
 import { observer } from "mobx-react-lite";
+import { NavLink } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const eventStore = useContext(EventStore);
@@ -9,7 +10,7 @@ const Navbar: React.FC = () => {
   return (
     <Menu fixed="top" inverted>
       <Container>
-        <Menu.Item header>
+        <Menu.Item header as = { NavLink } exact to = '/'>
           <img
             src="/assets/logo.png"
             alt="logo"
@@ -17,9 +18,9 @@ const Navbar: React.FC = () => {
           />
           Core Events
         </Menu.Item>
-        <Menu.Item name="messages" />
+        <Menu.Item name="events" as = { NavLink } to = '/events' />
         <Menu.Item>
-          <Button onClick={eventStore.openCreateForm} positive content="Create Event" />
+          <Button as = { NavLink } to = '/createEvent' positive content="Create Event" />
         </Menu.Item>
       </Container>
     </Menu>

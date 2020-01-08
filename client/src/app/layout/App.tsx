@@ -5,6 +5,9 @@ import EventsDashboard from "../../features/events/dashboard/EventsDashboard";
 import LoadingComponent from "./LoadingComponent";
 import EventStore from "../stores/eventStore";
 import { observer } from "mobx-react-lite";
+import { Route } from "react-router-dom";
+import HomePage from "../../features/home/HomePage";
+import EventForm from "../../features/events/form/EventForm";
 
 const App = () => {
   const eventStore = useContext(EventStore);
@@ -20,7 +23,9 @@ const App = () => {
       <Navbar />
 
       <Container style={{ marginTop: "100px" }}>
-        <EventsDashboard />
+        <Route exact path='/' component = { HomePage } />
+        <Route path='/events' component = { EventsDashboard } />
+        <Route path='/createEvent' component = { EventForm } />
       </Container>
     </Fragment>
   );
